@@ -7,6 +7,7 @@ import { render } from '@testing-library/react';
 import ValidationComponent from './ValidationComponent/ValidationComponent';
 import CharComponent from './CharComponent/CharComponent';
 
+
 class App extends Component {
   state = {
     inputLenght : null,
