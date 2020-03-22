@@ -4,31 +4,67 @@ import './App.css';
 import UserInput from './UserInput/UserInput';
 import UserOutput from './UserOutput/UserOutput';
 import { render } from '@testing-library/react';
+import ValidationComponent from './ValidationComponent/ValidationComponent';
+import CharComponent from './CharComponent/CharComponent';
 
 class App extends Component {
   state = {
-      usernames : ['Amir Hossein' , 'ALi'],
-      passwords : ['123456' , '1qaz']
-
+    inputLenght : null,
+    input: '',
+    chars: []
   };
+  
+  charClickHanlder =(event ,index) => {
+    debugger;
+    let input = this.state.input.split('');
+    input.splice(index , 1);
+    let inputStr = input.join('');
+    this.setState({
+      inputLenght: inputStr.length,
+      input: inputStr,
+      chars: input
+    });
+  }
 
   inputChangeHandler = (event) =>{
-      let temp = event.target.value;
-      this.setState(
+    const len = event.target.value;
+    
+    this.setState(
       {
-          usernames : [temp , this.state.usernames[1]]
+        inputLenght : len.length,
+        input: len,
+        chars: len.split('')
       });
-  }
-
-  render(){
-    return (
-      <div className="App">
-        <UserInput change={this.inputChangeHandler}>{this.state.usernames[0]}</UserInput>
-        <UserOutput username={this.state.usernames[0]} password={this.state.passwords[0]} />
-        <UserOutput username={this.state.usernames[1]} password={this.state.passwords[1]} />
-      </div>
-    );
-  }
+      if(len.length>=5){
+        event.target.className = '';
+        
+      }
+      else{
+        event.target.className = 'inputRed';
+      }
+    }
+    
+    render(){
+      let chars = (
+        <div>
+          {this.state.chars.map(
+            (char , index) => {
+            return  (<CharComponent click={(event) => this.charClickHanlder(event , index)}>{char}</CharComponent>);
+            }
+          )}
+        </div>
+          
+          );
+          
+          return (
+            <div className="App">
+            <input placeholder='Enter a text...' onChange={this.inputChangeHandler} value={this.state.input} />
+            <ValidationComponent length={this.state.inputLenght}></ValidationComponent>
+            {chars}
+            </div>
+            );
+          }
 }
-
+        
 export default App;
+        
